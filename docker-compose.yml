@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
 
   mon-site:
-    image: nginx:latest
+    image: melvine22/mon-site-html:latest             # nginx:latest
     volumes:
       - ./html:/usr/share/nginx/html
 

@@ -1,0 +1,31 @@
+name: CI to Docker Hub
+
+# 1. Quand est-ce que la pipeline se déclenche ?
+on:
+  push:
+    branches: [ "main" ] # Dès que tu fais un push sur la branche principale
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest # GitHub nous prête un ordinateur sous Linux
+    
+    steps:
+      # ÉTAPE A : Récupérer ton code (index.html, Dockerfile, etc.)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ÉTAPE B : Se connecter à ton compte Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }} # Utilise tes secrets configurés sur GitHub
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # ÉTAPE C : Construire l'image et l'envoyer
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # ATTENTION : Remplace 'ton-pseudo' par ton vrai nom Docker Hub ci-dessous
+          tags: melvine22/mon-site-html:latest
